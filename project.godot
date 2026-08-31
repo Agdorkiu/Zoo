@@ -1,0 +1,14 @@
+; Archivo de proyecto de Godot 4.
+; Sin este archivo, la carpeta no es un proyecto reconocible por el editor.
+
+config_version=5
+
+[application]
+
+config/name="EX-2986 - Prueba de camara y tiempo"
+run/main_scene="res://test/TestScene.tscn"
+
+[autoload]
+
+TimeManager="*res://autoload/TimeManager.gd"
+MapManager="*res://autoload/MapManager.gd"

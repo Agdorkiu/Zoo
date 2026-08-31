@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://d4k8m1p9x2wq7"]
+
+[ext_resource type="Script" path="res://test/MapViewSwitcher.gd" id="0"]
+[ext_resource type="PackedScene" uid="uid://c8j3n2k6r1qxw" path="res://camera/camera_rig/CameraRig.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://ex2986_time_hud" path="res://ui/time_hud/TimeHUD.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://ex2986_planet_view" path="res://planet_view/PlanetView.tscn" id="3"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="Material_ground"]
+albedo_color = Color(0.28, 0.45, 0.28, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cube"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="Material_cube"]
+albedo_color = Color(0.8, 0.25, 0.2, 1)
+
+[node name="TestScene" type="Node3D"]
+script = ExtResource("0")
+
+[node name="ZooView" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="ZooView"]
+transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="ZooView"]
+mesh = SubResource("PlaneMesh_ground")
+surface_material_override/0 = SubResource("Material_ground")
+
+[node name="Cube" type="MeshInstance3D" parent="ZooView"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_cube")
+surface_material_override/0 = SubResource("Material_cube")
+
+[node name="CameraRig" parent="ZooView" instance=ExtResource("1")]
+
+[node name="PlanetView" parent="." instance=ExtResource("3")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TimeHUD" parent="CanvasLayer" instance=ExtResource("2")]

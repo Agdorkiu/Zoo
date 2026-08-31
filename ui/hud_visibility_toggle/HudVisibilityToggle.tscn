@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ex2986_hud_visibility_toggle"]
+
+[ext_resource type="Script" path="res://ui/hud_visibility_toggle/HudVisibilityToggle.gd" id="1"]
+
+[node name="HudVisibilityToggle" type="Button"]
+layout_mode = 2
+text = "Ocultar HUD de tiempo"
+script = ExtResource("1")
