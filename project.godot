@@ -13,7 +13,3 @@ config_version=5
 config/name="EX-2986 - Prueba de camara y tiempo"
 run/main_scene="res://test/TestScene.tscn"
 config/features=PackedStringArray("4.7")
-
-[autoload]
-
-MapManager="*res://autoload/MapManager.gd"
