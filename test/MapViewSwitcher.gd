@@ -17,9 +17,7 @@ extends Node3D
 ##      motor sepa por cuál renderizar.
 
 @onready var _zoo_view: Node3D = $ZooView
-@onready var _planet_view: Node3D = $PlanetView
 @onready var _zoo_camera: Camera3D = $ZooView/CameraRig/CameraPivot/CameraArm/Camera3D
-@onready var _planet_camera: Camera3D = $PlanetView/PlanetCameraRig/OrbitPitch/Camera3D
 
 
 func _ready() -> void:
@@ -31,10 +29,7 @@ func _on_map_changed(new_map: int) -> void:
 	var is_zoo: bool = new_map == MapManager.MapView.ZOO
 
 	_zoo_view.visible = is_zoo
-	_planet_view.visible = not is_zoo
 
 	_zoo_view.process_mode = Node.PROCESS_MODE_INHERIT if is_zoo else Node.PROCESS_MODE_DISABLED
-	_planet_view.process_mode = Node.PROCESS_MODE_DISABLED if is_zoo else Node.PROCESS_MODE_INHERIT
 
 	_zoo_camera.current = is_zoo
-	_planet_camera.current = not is_zoo
