@@ -14,19 +14,19 @@ size = Vector3(2, 2, 2)
 [sub_resource type="StandardMaterial3D" id="Material_cube"]
 albedo_color = Color(0.8, 0.25, 0.2, 1)
 
-[node name="TestScene" type="Node3D"]
+[node name="TestScene" type="Node3D" unique_id=490509028]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=603054501]
 transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Ground" type="MeshInstance3D" parent="."]
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=1045680306]
 mesh = SubResource("PlaneMesh_ground")
 surface_material_override/0 = SubResource("Material_ground")
 
-[node name="Cube" type="MeshInstance3D" parent="."]
+[node name="Cube" type="MeshInstance3D" parent="." unique_id=728036036]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("BoxMesh_cube")
 surface_material_override/0 = SubResource("Material_cube")
 
-[node name="CameraRig" parent="." instance=ExtResource("1")]
+[node name="CameraRig" parent="." unique_id=1261931938 instance=ExtResource("1")]

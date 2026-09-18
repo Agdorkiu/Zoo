@@ -17,7 +17,7 @@ extends Node3D
 ##   - Teclado Q/E: rotar la cámara (yaw).
 ##   - Rueda del ratón: acercar / alejar (zoom).
 ##   - Botón central + arrastrar a los lados: rotar la cámara (yaw).
-##   - Botón izquierdo + arrastrar: mover la cámara (paneo del mapa).
+##   - Botón derecho + arrastrar: mover la cámara (paneo del mapa).
 ##
 ## Importante: el HUD (TimeHUD, etc.) vive en un CanvasLayer, independiente
 ## de este árbol 3D, así que nunca se ve afectado por este nodo. Además,
@@ -46,27 +46,27 @@ signal zoom_changed(new_distance: float)
 ## Radianes de rotación por píxel de arrastre horizontal.
 @export var drag_rotate_sensitivity: float = 0.006
 
-## --- Arrastre con botón izquierdo: mover (paneo) ---------------------------
+## --- Arrastre con botón derecho: mover (paneo) ------------------------------
 ## Unidades de mundo por píxel de arrastre, al zoom de referencia (min_zoom).
 @export var drag_pan_sensitivity: float = 0.02
 ## Invierte la dirección del paneo si se siente "al revés".
 @export var invert_pan: bool = false
-## Movimiento máximo (en píxeles) antes de considerar que un clic izquierdo
-## fue en realidad un arrastre. Por debajo de esto, se emite `left_click`
+## Movimiento máximo (en píxeles) antes de considerar que un clic derecho
+## fue en realidad un arrastre. Por debajo de esto, se emite `right_click`
 ## para que un futuro sistema de selección lo use sin pisar el paneo.
 @export var click_vs_drag_threshold_px: float = 6.0
 
-## Emite la posición de pantalla de un clic izquierdo que NO se convirtió
+## Emite la posición de pantalla de un clic derecho que NO se convirtió
 ## en arrastre (para un futuro sistema de selección de objetos del mapa).
-signal left_click(screen_position: Vector2)
+signal right_click(screen_position: Vector2)
 
 @onready var _pivot: Node3D = $CameraPivot
 @onready var _camera: Camera3D = $CameraPivot/CameraArm/Camera3D
 
 var _is_panning: bool = false
 var _is_rotating: bool = false
-var _left_press_position: Vector2 = Vector2.ZERO
-var _left_drag_distance: float = 0.0
+var _right_press_position: Vector2 = Vector2.ZERO
+var _right_drag_distance: float = 0.0
 
 
 func _ready() -> void:
@@ -74,8 +74,8 @@ func _ready() -> void:
 	_ensure_action("camera_move_back", [KEY_S])
 	_ensure_action("camera_move_left", [KEY_A])
 	_ensure_action("camera_move_right", [KEY_D])
-	_ensure_action("camera_rotate_left", [KEY_Q])
-	_ensure_action("camera_rotate_right", [KEY_E])
+	_ensure_action("camera_rotate_left", [KEY_E])
+	_ensure_action("camera_rotate_right", [KEY_Q])
 
 	_camera.position.z = clamp(_camera.position.z, min_zoom, max_zoom)
 
@@ -140,15 +140,15 @@ func _handle_mouse_button(event: InputEventMouseButton) -> void:
 		MOUSE_BUTTON_WHEEL_DOWN:
 			if event.pressed:
 				_zoom(zoom_step)
-		MOUSE_BUTTON_LEFT:
+		MOUSE_BUTTON_RIGHT:
 			if event.pressed:
 				_is_panning = true
-				_left_press_position = event.position
-				_left_drag_distance = 0.0
+				_right_press_position = event.position
+				_right_drag_distance = 0.0
 			else:
 				_is_panning = false
-				if _left_drag_distance <= click_vs_drag_threshold_px:
-					left_click.emit(_left_press_position)
+				if _right_drag_distance <= click_vs_drag_threshold_px:
+					right_click.emit(_right_press_position)
 		MOUSE_BUTTON_MIDDLE:
 			_is_rotating = event.pressed
 
@@ -157,7 +157,7 @@ func _handle_mouse_button(event: InputEventMouseButton) -> void:
 
 func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 	if _is_panning:
-		_left_drag_distance += event.relative.length()
+		_right_drag_distance += event.relative.length()
 		_pan(event.relative)
 	if _is_rotating:
 		# Solo el componente horizontal del arrastre rota la cámara, tal
